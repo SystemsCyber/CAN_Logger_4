@@ -1,0 +1,8 @@
+C:/Users/chatt/STM32CubeIDE/workspace_1.14.0/FDCAN_Classic_Frame_Networking/CM7/Src/main.c:61:5:main	8	static
+C:/Users/chatt/STM32CubeIDE/workspace_1.14.0/FDCAN_Classic_Frame_Networking/CM7/Src/main.c:152:13:SystemClock_Config	128	static
+C:/Users/chatt/STM32CubeIDE/workspace_1.14.0/FDCAN_Classic_Frame_Networking/CM7/Src/main.c:228:13:Error_Handler	4	static
+C:/Users/chatt/STM32CubeIDE/workspace_1.14.0/FDCAN_Classic_Frame_Networking/CM7/Src/main.c:240:13:FDCAN_Config	40	static
+C:/Users/chatt/STM32CubeIDE/workspace_1.14.0/FDCAN_Classic_Frame_Networking/CM7/Src/main.c:329:6:HAL_FDCAN_RxFifo0Callback	16	static
+C:/Users/chatt/STM32CubeIDE/workspace_1.14.0/FDCAN_Classic_Frame_Networking/CM7/Src/main.c:360:6:LED_Display	16	static
+C:/Users/chatt/STM32CubeIDE/workspace_1.14.0/FDCAN_Classic_Frame_Networking/CM7/Src/main.c:398:13:CPU_CACHE_Enable	24	static,ignoring_inline_asm
+C:/Users/chatt/STM32CubeIDE/workspace_1.14.0/FDCAN_Classic_Frame_Networking/CM7/Src/main.c:413:13:MPU_Config	24	static
