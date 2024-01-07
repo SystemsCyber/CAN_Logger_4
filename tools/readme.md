@@ -4,7 +4,7 @@ This document provides an overview of the key tools used in the development of S
 
 # STM32CubeMX
 
-![STM32CubeMX](..images/CubeMX.png)
+![STM32CubeMX](../images/CubeMX.png)
 
 ## Overview
 STM32CubeMX is a graphical tool that allows a very easy configuration of STM32 microcontrollers and microprocessors. It is used to configure peripherals, middleware, and other settings for STM32 projects. 
@@ -15,7 +15,7 @@ STM32CubeMX is a graphical tool that allows a very easy configuration of STM32 m
 
 # STM32CubeIDE
 
-![STM32CubeIDE](..images/Getting_Started.png)
+![STM32CubeIDE](../images/Getting_Started.png)
 
 ## Overview
 STM32CubeIDE is an all-in-one multi-OS development tool, which is part of the STM32Cube software ecosystem. It offers a comprehensive development environment for STM32 microcontrollers.
@@ -26,8 +26,8 @@ STM32CubeIDE is an all-in-one multi-OS development tool, which is part of the ST
 
 # STM32Cube Programmer
 
-![STM32Cube Programmer](..images/Prg1.png)
-![STM32Cube Programmer](..images/Prg2.png)
+![STM32Cube Programmer](../images/Prg1.png)
+![STM32Cube Programmer](../images/Prg2.png)
 
 ## Overview
 STM32Cube Programmer provides an easy-to-use and efficient environment for reading, writing and verifying device memory, programming the option bytes, and accessing the MCU debug features.
