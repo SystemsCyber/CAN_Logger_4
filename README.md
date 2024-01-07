@@ -4,7 +4,9 @@ This repository contains the hardware documentation and software for the data lo
 ## Structure
 - `hardware/`: Altium project files for DELVEC.
 - `prototype/`: Prototype software for development.
-- `main/`: Main software for the device.
+- `firmware/`: Main software for the device.
+- `tools/`: Tools used in development.
+- `docs/`: Documentation for the device.
 
 ## Getting Started
 To clone this repository, use `git clone https://github.com/SystemsCyber/DELVEC`.
