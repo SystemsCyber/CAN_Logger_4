@@ -5,7 +5,7 @@ This is a basic prototype for CAN FD (Controller Area Network Flexible Data-rate
 
 ## Hardware
 STM32H745I Discovery Kit
-![Prototype Hardware](..images/Discovery_Kit.jpg)
+![Prototype Hardware](../images/Discovery_Kit.jpg)
 
 
 ## Setup and Usage
