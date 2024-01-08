@@ -1,0 +1,6 @@
+C:/Users/chatt/STM32Cube/Example/FreeRTOS_AMP_Dual_RTOS/CM4/Src/main.c:54:5:main	4
+C:/Users/chatt/STM32Cube/Example/FreeRTOS_AMP_Dual_RTOS/CM4/Src/main.c:114:13:prvCore2Tasks	4
+C:/Users/chatt/STM32Cube/Example/FreeRTOS_AMP_Dual_RTOS/CM4/Src/main.c:159:13:prvCore2InterruptHandler	3
+C:/Users/chatt/STM32Cube/Example/FreeRTOS_AMP_Dual_RTOS/CM4/Src/main.c:185:6:HAL_GPIO_EXTI_Callback	1
+C:/Users/chatt/STM32Cube/Example/FreeRTOS_AMP_Dual_RTOS/CM4/Src/main.c:196:13:Error_Handler	1
+C:/Users/chatt/STM32Cube/Example/FreeRTOS_AMP_Dual_RTOS/CM4/Src/main.c:206:6:vApplicationGetIdleTaskMemory	1
