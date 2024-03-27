@@ -1,4 +1,4 @@
-# DELVEC
+# DELVEC 
 This repository contains the hardware documentation and software for the data logging device for the NSF PIVOT Project, including Altium project files, prototype software for development, and main software for the device.
 
 ## Structure
