@@ -1,6 +1,0 @@
-C:/Users/chatt/STM32Cube/Example/FreeRTOS_AMP_Dual_RTOS/CM4/Src/main.c:54:5:main	24	static
-C:/Users/chatt/STM32Cube/Example/FreeRTOS_AMP_Dual_RTOS/CM4/Src/main.c:114:13:prvCore2Tasks	72	static,ignoring_inline_asm
-C:/Users/chatt/STM32Cube/Example/FreeRTOS_AMP_Dual_RTOS/CM4/Src/main.c:159:13:prvCore2InterruptHandler	16	static,ignoring_inline_asm
-C:/Users/chatt/STM32Cube/Example/FreeRTOS_AMP_Dual_RTOS/CM4/Src/main.c:185:6:HAL_GPIO_EXTI_Callback	16	static
-C:/Users/chatt/STM32Cube/Example/FreeRTOS_AMP_Dual_RTOS/CM4/Src/main.c:196:13:Error_Handler	4	static
-C:/Users/chatt/STM32Cube/Example/FreeRTOS_AMP_Dual_RTOS/CM4/Src/main.c:206:6:vApplicationGetIdleTaskMemory	24	static
