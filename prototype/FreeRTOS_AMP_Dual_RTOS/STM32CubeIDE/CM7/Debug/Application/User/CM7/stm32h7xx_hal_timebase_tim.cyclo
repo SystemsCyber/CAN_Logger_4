@@ -1,5 +1,0 @@
-C:/Users/chatt/STM32Cube/Example/FreeRTOS_AMP_Dual_RTOS/CM7/Src/stm32h7xx_hal_timebase_tim.c:57:19:HAL_InitTick	4
-C:/Users/chatt/STM32Cube/Example/FreeRTOS_AMP_Dual_RTOS/CM7/Src/stm32h7xx_hal_timebase_tim.c:129:6:HAL_SuspendTick	1
-C:/Users/chatt/STM32Cube/Example/FreeRTOS_AMP_Dual_RTOS/CM7/Src/stm32h7xx_hal_timebase_tim.c:141:6:HAL_ResumeTick	1
-C:/Users/chatt/STM32Cube/Example/FreeRTOS_AMP_Dual_RTOS/CM7/Src/stm32h7xx_hal_timebase_tim.c:155:6:HAL_TIM_PeriodElapsedCallback	1
-C:/Users/chatt/STM32Cube/Example/FreeRTOS_AMP_Dual_RTOS/CM7/Src/stm32h7xx_hal_timebase_tim.c:168:6:TIM6_DAC_IRQHandler	1
