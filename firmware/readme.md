@@ -15,23 +15,25 @@ A modular, high-speed CAN logging system for Teensy 4.1 that supports:
 
 ## Project Structure
 
+<pre>
 can_logger/
-├── can_logger.ino # Main sketch — glue logic
-├── Config.h # Centralized pinout and config
+├── can_logger.ino              # Main sketch — glue logic
+├── Config.h                    # Centralized pinout and config
 ├── include/
-│ └── DataStructs.h # Binary log record definitions
+│   └── DataStructs.h           # Binary log record definitions
 ├── logger/
-│ ├── LoggerManager.cpp/.h # Logging FSM and buffers
-│ ├── DataLogger.cpp/.h # SD writes and file rotation
+│   ├── LoggerManager.cpp/.h    # Logging FSM and buffers
+│   ├── DataLogger.cpp/.h       # SD writes and file rotation
 ├── can/
-│ └── CANManager.cpp/.h # CAN1–4 handling
+│   └── CANManager.cpp/.h       # CAN1–4 handling
 ├── sensors/
-│ ├── GPSManager.cpp/.h # GNSS via SparkFun u-blox lib
-│ ├── IMUManager.cpp/.h # ASM330LHHTR via raw I2C
+│   ├── GPSManager.cpp/.h       # GNSS via SparkFun u-blox lib
+│   ├── IMUManager.cpp/.h       # ASM330LHHTR via raw I2C
 ├── net/
-│ └── FTPServer.cpp/.h # HTTP file server + pause logging
+│   └── FTPServer.cpp/.h        # HTTP file server + pause logging
 ├── utils/
-│ └── LEDStatus.cpp/.h # LED blinking logic
+│   └── LEDStatus.cpp/.h        # LED blinking logic
+</pre>
 
 
 ---
