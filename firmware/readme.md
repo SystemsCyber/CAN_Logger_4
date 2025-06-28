@@ -75,12 +75,13 @@ Use Arduino IDE or PlatformIO with these libraries:
 
 Each record is:
 
-```c
+```
 struct LogPacketHeader {
     uint32_t timestamp_us;
     uint8_t source;
     uint16_t length;
 };
+```
 // Followed by CANLogEntry, GPSLogEntry, or IMULogEntry
 
 See include/DataStructs.h for all supported log entry types.
