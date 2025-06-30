@@ -1,7 +1,7 @@
-#include "IMUManager.h"
-#include "LoggerManager.h"
-#include "DataStructs.h"
-#include "LEDStatus.h"
+#include "imu_manager.h"
+#include "../logger/logger_manager.h"
+#include "../include/data_structs.h"
+#include "../utils/led_status.h"
 
 #define WHO_AM_I_REG     0x0F
 #define CTRL1_XL         0x10

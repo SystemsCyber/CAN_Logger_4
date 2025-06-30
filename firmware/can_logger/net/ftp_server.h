@@ -2,6 +2,7 @@
 #define FTP_SERVER_H
 
 #include <Arduino.h>
+#include <WiFi101.h> 
 
 class FTPServer {
 public:

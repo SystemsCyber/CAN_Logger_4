@@ -1,5 +1,5 @@
-#include "LoggerManager.h"
-#include "DataLogger.h"
+#include "logger_manager.h"
+#include "data_logger.h"
 
 LoggerManager loggerManager;
 

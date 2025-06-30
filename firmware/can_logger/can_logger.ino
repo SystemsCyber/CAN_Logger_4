@@ -8,6 +8,15 @@
 #include "utils/led_status.h"
 #include "include/data_structs.h"
 
+#include "utils/led_status.cpp"
+#include "can/can_manager.cpp"
+#include "logger/data_logger.cpp"
+#include "logger/logger_manager.cpp"
+#include "net/ftp_server.cpp"
+#include "sensors/gps_manager.cpp"
+#include "sensors/imu_manager.cpp"
+
+
 elapsedMillis startButtonTimer = 0;
 elapsedMillis stopButtonTimer = 0;
 bool lastStartState = HIGH;

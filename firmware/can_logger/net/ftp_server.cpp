@@ -1,6 +1,6 @@
-#include "FTPServer.h"
-#include "LoggerManager.h"
-#include "LEDStatus.h"
+#include "ftp_server.h"
+#include "../logger/logger_manager.h"
+#include "../utils/led_status.h"
 
 #include <WiFi101.h>
 #include <SPI.h>

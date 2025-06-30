@@ -2,6 +2,7 @@
 #define IMU_MANAGER_H
 
 #include <Arduino.h>
+#include <Wire.h>  
 
 class IMUManager {
 public:

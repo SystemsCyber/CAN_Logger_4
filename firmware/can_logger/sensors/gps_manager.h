@@ -2,6 +2,7 @@
 #define GPS_MANAGER_H
 
 #include <Arduino.h>
+#include <Wire.h>  
 
 class GPSManager {
 public:

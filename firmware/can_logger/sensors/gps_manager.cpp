@@ -1,7 +1,7 @@
-#include "GPSManager.h"
-#include "DataStructs.h"
-#include "LoggerManager.h"
-#include "LEDStatus.h"
+#include "gps_manager.h"
+#include "../include/data_structs.h"
+#include "../logger/logger_manager.h"
+#include "../utils/led_status.h"
 
 #include <SparkFun_u-blox_GNSS_v3.h>
 

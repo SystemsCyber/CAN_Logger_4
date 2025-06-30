@@ -1,7 +1,7 @@
-#include "CANManager.h"
-#include "DataStructs.h"
-#include "LoggerManager.h"
-#include "LEDStatus.h"
+#include "can_manager.h"
+#include "../include/data_structs.h"
+#include "../logger/logger_manager.h"
+#include "../utils/led_status.h"
 
 #include <FlexCAN_T4.h>
 #include <ACAN2517FD.h>
@@ -67,7 +67,7 @@ void CANManager::initCAN4() {
         500000,
         DataBitRateFactor::x1
     );
-    settings.mRequestedMode = ACAN2517FDSettings::NormalMode;
+    // settings.mRequestedMode = ACAN2517FDSettings::NormalMode;
 
     uint32_t errorCode = can4.begin(settings, [] { can4.isr(); });
     if (errorCode != 0) {
@@ -83,7 +83,7 @@ void CANManager::poll() {
 }
 
 void CANManager::pollCAN4() {
-    CANMessage frame;
+    CANFDMessage frame;
     while (can4.available()) {
         can4.receive(frame);
         logFrame(SOURCE_CAN4, frame.id, frame.len, frame.data);
