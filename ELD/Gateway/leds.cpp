@@ -6,7 +6,7 @@ const int ledPinY = 15; // Yellow
 const int ledPinG = 9;  // Green
 const int ledPinR = 32; // Red
 
-bool setupLEDs() {
+bool initLEDs() {
   pinMode(ledPinB, OUTPUT);
   pinMode(ledPinY, OUTPUT);
   pinMode(ledPinG, OUTPUT);
