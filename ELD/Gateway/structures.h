@@ -69,4 +69,61 @@ struct VehicleData
     char vin[18];
 };
 
+/***********************************************************************
+ * API Data
+ ***********************************************************************/
+
+struct APIHeader
+{
+    uint16_t magic;
+    uint16_t length;
+    uint8_t  version;
+    uint8_t  command;
+};
+
+enum APICommand
+{
+    CMD_PING                = 0x01,
+    CMD_LOGIN               = 0x02,
+    CMD_LOGOUT              = 0x03,
+    CMD_DRIVER_INFO         = 0x04,
+    CMD_SET_DUTY_STATUS     = 0x05,
+    CMD_SET_SHIPPING_ID     = 0x06,
+    CMD_CERTIFY             = 0x07,
+    CMD_GET_STATUS          = 0x08,
+    CMD_GET_RODS            = 0x09,
+    CMD_GET_EVENTS          = 0x0A,
+    CMD_GET_DIAGNOSTICS     = 0x0B,
+    CMD_TRANSFER            = 0x0C,
+    CMD_TIMEZONE            = 0x0D
+};
+
+struct LoginRequest
+{
+    char username[32];
+    uint8_t token[32];
+    uint32_t nonce;
+}
+
+struct DriverInfo
+{
+    char firstName[32];
+    char lastName[32];
+    char username[32];
+    char licenseNumber[32];
+    char licenseState[3];
+};
+
+struct DutyStatus
+{
+    uint8_t status;
+}
+
+struct ShippingDocument
+{
+    char id[32];
+}
+
+
+
 #endif
