@@ -11,14 +11,19 @@ CAN_message_t msg3;
 
 const uint32_t CAN_BAUD_RATES[] = {125000, 250000, 500000, 1000000};
 
-struct CANMessage {
-  uint64_t timestamp;
-  uint32_t id;
-  uint8_t len;
-  uint8_t buf[8];
-  uint8_t extended;
-  uint8_t overrun;
-  uint8_t mailbox;
+struct CANMessageLog
+{
+    uint64_t timestamp;
+    uint32_t id;
+    uint32_t pgn;
+    uint8_t priority;
+    uint8_t source;
+    uint8_t destination;
+    uint8_t len;
+    uint8_t buf[8];
+    uint8_t extended;
+    uint8_t overrun;
+    uint8_t mailbox;
 };
 
 static CANMessage entry;
@@ -129,19 +134,48 @@ bool initCAN()
     return true;
 }
 
+bool decodeJ1939ID(const CAN_message_t &msg,
+                   CANMessageLog &entry)
+{
+    if (!msg.flags.extended)
+        return false;
+
+    uint8_t priority = (msg.id >> 26) & 0x07;
+    uint8_t pf       = (msg.id >> 16) & 0xFF;
+    uint8_t ps       = (msg.id >> 8)  & 0xFF;
+    uint8_t sa       =  msg.id        & 0xFF;
+
+    entry.priority = priority;
+    entry.source   = sa;
+
+    if (pf < 240)
+    {
+        // PDU1 (Destination Specific)
+        entry.destination = ps;
+        entry.pgn = ((uint32_t)pf << 8);
+    }
+    else
+    {
+        // PDU2 (Broadcast)
+        entry.destination = 0xFF;
+        entry.pgn = ((uint32_t)pf << 8) | ps;
+    }
+
+    return true;
+}
+
 static void processCANMessage(uint8_t bus, const CAN_message_t &msg)
 {
-    // Placeholder
-    //
-    // Later:
-    //   Timestamp frame
-    //   Queue frame
-    //   Forward to eld.cpp
     entry.timestamp = getMicroTimestamp();
-    entry.id = msg.id;
+    entry.id        = msg.id;
+    entry.extended  = msg.flags.extended;
+    entry.overrun   = msg.flags.overrun;
+    entry.mailbox   = msg.mb;
+    // Ignore anything that isn't a valid J1939 frame
+    if (!decodeJ1939ID(msg, entry))
+        return;
     entry.len = msg.len;
     memcpy(entry.buf, msg.buf, msg.len);
-    entry.extended = msg.flags.extended;
-    entry.overrun = msg.flags.overrun;
-    entry.mailbox = msg.mb;
+    // Later:
+    // eldProcessCANMessage(entry);
 }
