@@ -8,5 +8,6 @@
  ***********************************************************************/
 
 bool initGPS(void);
+bool collectGPS(GPSData &gps);
 
 #endif

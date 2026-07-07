@@ -11,20 +11,6 @@ CAN_message_t msg3;
 
 const uint32_t CAN_BAUD_RATES[] = {125000, 250000, 500000, 1000000};
 
-struct CANMessageLog
-{
-    uint64_t timestamp;
-    uint32_t id;
-    uint32_t pgn;
-    uint8_t priority;
-    uint8_t source;
-    uint8_t destination;
-    uint8_t len;
-    uint8_t buf[8];
-    uint8_t extended;
-    uint8_t overrun;
-    uint8_t mailbox;
-};
 
 static CANMessage entry;
 
@@ -176,6 +162,5 @@ static void processCANMessage(uint8_t bus, const CAN_message_t &msg)
         return;
     entry.len = msg.len;
     memcpy(entry.buf, msg.buf, msg.len);
-    // Later:
-    // eldProcessCANMessage(entry);
+    eldProcessCANMessage(entry);
 }
