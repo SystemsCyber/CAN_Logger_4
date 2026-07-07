@@ -34,18 +34,20 @@ void setupELD(void)
         while (1);
     }
 
-    Serial.print("Initializing Crypto... ");
-    initCrypto();
-    Serial.println("Done");
+    if (!initCrypto()){
+        Serial.println("Crypto Initialization Failed");
+        while (1);
+    }
 
     if (!initGPS()){
         Serial.println("GPS Initialization Failed");
         while (1);
     }
 
-    Serial.print("Initializing CAN... ");
-    initCAN();
-    Serial.println("Done");
+    if(!initCAN()){
+        Serial.println("CAN Initialization Failed");
+        while (1);
+    }
 
     if (!setupWifi()){
         Serial.println("WiFi Initialization Failed");
