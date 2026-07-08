@@ -1,58 +1,250 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-interface HealthResponse {
-  status: string;
-  version: string;
+interface User {
+    username: string;
+    role: string;
+}
+
+interface FileInfo {
+    name: string;
+    size: number;
+    modified: string;
 }
 
 function App() {
-  const [health, setHealth] = useState<HealthResponse | null>(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetch("http://localhost:8000/health")
-      .then((res) => res.json())
-      .then((data) => {
-        setHealth(data);
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-  }, []);
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
 
-  return (
-    <div
-      style={{
-        fontFamily: "Arial, sans-serif",
-        maxWidth: "800px",
-        margin: "50px auto",
-      }}
-    >
-      <h1>ELD Backend Portal</h1>
+    const [message, setMessage] = useState("");
 
-      <hr />
+    const [user, setUser] = useState<User | null>(null);
 
-      <h2>System Status</h2>
+    const [files, setFiles] = useState<FileInfo[]>([]);
 
-      {loading ? (
-        <p>Checking backend...</p>
-      ) : health ? (
-        <>
-          <p>
-            <strong>Status:</strong> {health.status}
-          </p>
-          <p>
-            <strong>Version:</strong> {health.version}
-          </p>
-        </>
-      ) : (
-        <p style={{ color: "red" }}>
-          Backend Offline
-        </p>
-      )}
-    </div>
-  );
+    async function login() {
+
+        setMessage("");
+
+        try {
+
+            const response = await fetch(
+                "http://localhost:8000/auth/login",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        username,
+                        password
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                setMessage(data.detail);
+                return;
+            }
+
+            setUser(data);
+
+            const fileResponse = await fetch(
+                "http://localhost:8000/files"
+            );
+
+            const fileData = await fileResponse.json();
+
+            setFiles(fileData);
+
+        }
+        catch {
+
+            setMessage("Unable to contact backend.");
+
+        }
+
+    }
+
+    if (user) {
+
+        return (
+
+            <div style={{ padding: "40px", fontFamily: "Arial" }}>
+
+                <h1>ELD Backend Portal</h1>
+
+                <p>
+                    Logged in as <b>{user.username}</b> ({user.role})
+                </p>
+
+                <h2>Stored Files</h2>
+
+                <table
+                    style={{
+                        borderCollapse: "collapse",
+                        width: "100%"
+                    }}
+                >
+                    <thead>
+
+                        <tr>
+
+                            <th
+                                style={{
+                                    border: "1px solid black",
+                                    padding: "8px"
+                                }}
+                            >
+                                Filename
+                            </th>
+
+                            <th
+                                style={{
+                                    border: "1px solid black",
+                                    padding: "8px"
+                                }}
+                            >
+                                Size (Bytes)
+                            </th>
+
+                            <th
+                                style={{
+                                    border: "1px solid black",
+                                    padding: "8px"
+                                }}
+                            >
+                                Last Modified
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {files.map((file, index) => (
+
+                            <tr key={index}>
+
+                                <td
+                                    style={{
+                                        border: "1px solid black",
+                                        padding: "8px"
+                                    }}
+                                >
+                                    {file.name}
+                                </td>
+
+                                <td
+                                    style={{
+                                        border: "1px solid black",
+                                        padding: "8px"
+                                    }}
+                                >
+                                    {file.size}
+                                </td>
+
+                                <td
+                                    style={{
+                                        border: "1px solid black",
+                                        padding: "8px"
+                                    }}
+                                >
+                                    {file.modified}
+                                </td>
+
+                            </tr>
+
+                        ))}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        );
+
+    }
+
+    return (
+
+        <div
+            style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+                fontFamily: "Arial"
+            }}
+        >
+
+            <div
+                style={{
+                    width: "350px",
+                    padding: "30px",
+                    border: "1px solid #ccc",
+                    borderRadius: "10px"
+                }}
+            >
+
+                <h2>ELD Backend Login</h2>
+
+                <input
+                    type="text"
+                    placeholder="Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    style={{
+                        width: "100%",
+                        marginBottom: "15px",
+                        padding: "10px",
+                        boxSizing: "border-box"
+                    }}
+                />
+
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    style={{
+                        width: "100%",
+                        marginBottom: "20px",
+                        padding: "10px",
+                        boxSizing: "border-box"
+                    }}
+                />
+
+                <button
+                    onClick={login}
+                    style={{
+                        width: "100%",
+                        padding: "10px",
+                        cursor: "pointer"
+                    }}
+                >
+                    Login
+                </button>
+
+                <p
+                    style={{
+                        color: "darkred",
+                        marginTop: "20px"
+                    }}
+                >
+                    {message}
+                </p>
+
+            </div>
+
+        </div>
+
+    );
+
 }
 
 export default App;
