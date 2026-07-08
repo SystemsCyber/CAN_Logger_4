@@ -60,9 +60,11 @@ struct VehicleData
     bool validEngineHours;
     bool validVIN;
     bool validStarterMode;
+    bool validSpeed;
 
     uint32_t odometer;          // meters
     float engineHours;
+    float speed;              // km/h
 
     uint8_t starterMode;
 
@@ -114,16 +116,17 @@ struct DriverInfo
     char licenseState[3];
 };
 
-struct DutyStatus
+enum DutyStatusType
 {
-    uint8_t status;
-}
+    DUTY_OFF_DUTY         = 0,
+    DUTY_SLEEPER          = 1,
+    DUTY_DRIVING          = 2,
+    DUTY_ON_DUTY          = 3
+};
 
 struct ShippingDocument
 {
     char id[32];
 }
-
-
 
 #endif

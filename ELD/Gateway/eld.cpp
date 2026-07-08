@@ -4,6 +4,7 @@ static void processPGN65217(const CANMessageLog &msg);
 static void processPGN65253(const CANMessageLog &msg);
 static void processPGN65260(const CANMessageLog &msg);
 static void processPGN61444(const CANMessageLog &msg);
+static void processPGN65265(const CANMessageLog &msg);
 
 bool initELD(void)
 {
@@ -23,20 +24,24 @@ void eldProcessCANMessage(const CANMessageLog &msg)
 {
     switch (msg.pgn)
     {
-        case PGN_HIGH_RES_DISTANCE:
+        case 65217:
             processPGN65217(msg);
             break;
 
-        case PGN_ENGINE_HOURS:
+        case 65253:
             processPGN65253(msg);
             break;
 
-        case PGN_VIN:
+        case 65260:
             processPGN65260(msg);
             break;
 
-        case PGN_EEC1:
+        case 61444:
             processPGN61444(msg);
+            break;
+
+        case 65265:
+            processPGN65265(msg);
             break;
 
         default:
@@ -99,5 +104,18 @@ static void processPGN61444(const CANMessageLog &msg)
     // Placeholder
     // Replace once SPN layout is verified from the Digital Annex
     vehicle.starterMode = (msg.buf[6] >> 0) & 0x0F;
+}
+
+static void processPGN65265(const CANMessageLog &msg)
+{
+    if (msg.len < 8)
+        return;
+
+    vehicle.validVIN = true;
+
+    // Placeholder
+    // Replace once SPN layout is verified from the Digital Annex
+    memcpy(vehicle.vin, msg.buf, 17);
+    vehicle.vin[17] = '\0';
 }
 
