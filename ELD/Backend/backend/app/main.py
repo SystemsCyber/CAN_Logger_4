@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.auth import router as auth_router
 from app.api import router
 
-app = FastAPI(title="ELD Backend")
+app = FastAPI(title="ELD Frontend")
 
 app.add_middleware(
     CORSMiddleware,

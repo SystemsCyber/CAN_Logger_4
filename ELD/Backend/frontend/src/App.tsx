@@ -74,7 +74,7 @@ function App() {
 
             <div style={{ padding: "40px", fontFamily: "Arial" }}>
 
-                <h1>ELD Backend Portal</h1>
+                <h1>ELD Frontend Portal</h1>
 
                 <p>
                     Logged in as <b>{user.username}</b> ({user.role})
@@ -191,7 +191,7 @@ function App() {
                 }}
             >
 
-                <h2>ELD Backend Login</h2>
+                <h2>ELD Frontend Login</h2>
 
                 <input
                     type="text"
