@@ -116,6 +116,8 @@ const int ledPinB = 14; // Blue
 const int ledPinY = 15; // Yellow
 const int ledPinG = 9;  // Green
 const int ledPinR = 32; // Red
+bool ledG = false;
+uint32_t canTime = 0;
 //const int ledBuiltIn = LED_BUILTIN;
 
 // Terminating Resistor Control (ADG1612)
@@ -254,11 +256,24 @@ void setupLEDs() {
   pinMode(ledPinB, OUTPUT);
   pinMode(ledPinY, OUTPUT);
   pinMode(ledPinG, OUTPUT);
-  pinMode(ledPinR, OUTPUT);
+  // pinMode(ledPinR, OUTPUT);
   digitalWrite(ledPinB, HIGH);
   digitalWrite(ledPinY, HIGH);
   digitalWrite(ledPinG, HIGH);
-  digitalWrite(ledPinR, HIGH);
+  // digitalWrite(ledPinR, HIGH);
+  delay(1000);
+  digitalWrite(ledPinB, LOW);
+  digitalWrite(ledPinY, LOW);
+  digitalWrite(ledPinG, LOW);
+  delay(1000);
+  digitalWrite(ledPinB, HIGH);
+  digitalWrite(ledPinY, HIGH);
+  digitalWrite(ledPinG, HIGH);
+  // digitalWrite(ledPinR, HIGH);
+  delay(1000);
+  digitalWrite(ledPinB, LOW);
+  digitalWrite(ledPinY, LOW);
+  digitalWrite(ledPinG, LOW);
 }
 
 uint64_t getMicroTimestamp() {
@@ -284,24 +299,24 @@ void setupWifi()
   WiFi.setPins(WIFI_CS, WIFI_IRQ, WIFI_RST, WIFI_EN);
   // check for the presence of the shield:
   if (WiFi.status() == WL_NO_SHIELD) {
-    #ifdef DEBUG 
-      Serial.println("WiFi shield not present");
-    #endif
+    // #ifdef DEBUG 
+    //   Serial.println("WiFi shield not present");
+    // #endif
     // don't continue:
     while (true);
   }
   // attempt to create access point
   status = WiFi.beginAP(ssid, pass);
   if (status != WL_AP_LISTENING) {
-    #ifdef DEBUG
-      Serial.println("Creating access point failed");
-    #endif
+    // #ifdef DEBUG
+    //   Serial.println("Creating access point failed");
+    // #endif
     // don't continue
     while (true);
   }
   delay(10000);
   server.begin();
-  Serial.println("Wifi Setup Successful");
+  // Serial.println("Wifi Setup Successful");
 }
 
 uint32_t can1_autobaud() 
@@ -376,11 +391,23 @@ void can1Sniff(const CAN_message_t &msg1){
   entry.extended = msg1.flags.extended;
   entry.overrun = msg1.flags.overrun;
   entry.mailbox = msg1.mb;
+  if (millis() - canTime >= 500){
+    if (!ledG){
+      digitalWrite(ledPinG, HIGH);
+      ledG = true;
+    }
+    else{
+      digitalWrite(ledPinG, LOW);
+      ledG = false;
+    }
+    canTime = millis();
+  }
 }
 
 void can2Sniff(const CAN_message_t &msg2){
   if (can2LogCount >= MAX_CAN_MSGS_PER_SECTION-1) {
     flushRequested = true;
+    return;
   }
   
   CANMessageLog &entry = can2Log[can2LogCount++];
@@ -391,7 +418,18 @@ void can2Sniff(const CAN_message_t &msg2){
   entry.extended = msg2.flags.extended;
   entry.overrun = msg2.flags.overrun;
   entry.mailbox = msg2.mb;
-  if (flushRequested){return;}
+  if (millis() - canTime >= 500){
+    if (!ledG){
+      digitalWrite(ledPinG, HIGH);
+      ledG = true;
+    }
+    else{
+      digitalWrite(ledPinG, LOW);
+      ledG = false;
+    }
+    canTime = millis();
+  }
+  // if (flushRequested){return;}
 }
 
 //void can3Sniff(const CAN_message_t &msg3){
@@ -413,17 +451,18 @@ void can2Sniff(const CAN_message_t &msg2){
 void setupCAN()
 {
   // CAN1 Setup
-  uint32_t baudRate = can1_autobaud();
-  if (baudRate !=0){
+  uint32_t baudRate = 0;
+  baudRate = can1_autobaud();
+  if (baudRate != 0){
     can1.begin(); 
     can1.setBaudRate(baudRate);
     can1.setMaxMB(16);
     can1.enableFIFO();
     can1.enableFIFOInterrupt();
     can1.onReceive(can1Sniff);
-    Serial.println("Can1 Setup");
   }
   // CAN2 Setup
+  baudRate = 0;
   baudRate = can2_autobaud();
   if (baudRate !=0){
     can2.begin();
@@ -432,7 +471,6 @@ void setupCAN()
     can2.enableFIFO();
     can2.enableFIFOInterrupt();
     can2.onReceive(can2Sniff);
-    Serial.println("Can2 Setup");
   }
   // CAN3 Setup
 //  baudRate = can3_autobaud();
@@ -456,15 +494,15 @@ void setupCAN()
       DataBitRateFactor::x1 // no CAN FD
   );
   const uint32_t errorCode = can4.begin (settings, [] { can4.isr () ; }) ;
-  #ifdef DEBUG
-    if (errorCode == 0) {
-      Serial.println ("CAN4 Configuration ok") ;
-    }
-    else{
-      Serial.print ("CAN4 Configuration error 0x") ;
-      Serial.println (errorCode, HEX) ;
-    }
-  #endif
+  // #ifdef DEBUG
+  //   if (errorCode == 0) {
+  //     Serial.println ("CAN4 Configuration ok") ;
+  //   }
+  //   else{
+  //     Serial.print ("CAN4 Configuration error 0x") ;
+  //     Serial.println (errorCode, HEX) ;
+  //   }
+  // #endif
 }
 
 void writeRegister(uint8_t reg, uint8_t value) {
@@ -501,11 +539,11 @@ void setupIMU()
   Wire.begin();
   delay(100);
   uint8_t whoami = readRegister(WHO_AM_I_REG);
-  Serial.print("WHO_AM_I: 0x"); Serial.println(whoami, HEX);
+  // Serial.print("WHO_AM_I: 0x"); Serial.println(whoami, HEX);
   if (whoami != 0x6B) {
-    #ifdef DEBUG
-    Serial.println("Unexpected WHO_AM_I value");
-    #endif
+    // #ifdef DEBUG
+    // Serial.println("Unexpected WHO_AM_I value");
+    // #endif
     while (1);
   }
   // Reset device
@@ -515,9 +553,9 @@ void setupIMU()
   writeRegister(CTRL1_XL, 0x40);
   // Enable gyro
   writeRegister(CTRL2_G, 0x40);
-  #ifdef DEBUG
-    Serial.println("ASM330LHHTR initialized.");
-  #endif
+  // #ifdef DEBUG
+  //   Serial.println("ASM330LHHTR initialized.");
+  // #endif
 }
 
 
@@ -540,47 +578,67 @@ unsigned long processSyncMessage() {
 }
 
 
+// void setupRTC()
+// {
+//   setSyncProvider(getTeensy3Time);
+//   if (timeStatus() != timeSet) {
+//     if (Serial.available()) {
+//     time_t t = processSyncMessage();
+//     if (t != 0) {
+//       time_t utc = t + (6 * 3600);
+//       Teensy3Clock.set(utc);
+//       setTime(utc);
+//       // #ifdef DEBUG
+//       //   Serial.println("Unable to sync with the RTC");
+//       // #endif
+//     }
+//   }
+//   } 
+//   else {
+//     // #ifdef DEBUG
+//     //   Serial.print("RTC has set the system time: ");
+//     // #endif
+//   }
+// }
+
 void setupRTC()
 {
-  setSyncProvider(getTeensy3Time);
-  if (timeStatus() != timeSet) {
-    if (Serial.available()) {
-    time_t t = processSyncMessage();
-    if (t != 0) {
-      time_t utc = t + (6 * 3600);
-      Teensy3Clock.set(utc);
-      setTime(utc);
-      #ifdef DEBUG
-        Serial.println("Unable to sync with the RTC");
-      #endif
-    }
-  }
-  } 
-  else {
-    #ifdef DEBUG
-      Serial.print("RTC has set the system time: ");
-    #endif
-  }
-}
+    time_t rtc = Teensy3Clock.get();
 
+    // Serial.print("RTC: ");
+    // Serial.println(rtc);
+
+    // setSyncProvider(getTeensy3Time);
+
+    // if (rtc < 1700000000)
+    // {
+    //     // Serial.println("RTC invalid.");
+    //   while(1);
+    // }
+    // else
+    // {
+    //     // Serial.println("RTC OK.");
+    //     setTime(rtc);
+    // }
+}
 
 void setupGPS() {
   myWire.begin();
-  Serial.println("Wire Started");
+  // Serial.println("Wire Started");
 //  while (!myGNSS.begin(myWire)){//, gnssAddress)) {
 //    #ifdef DEBUG
 //      Serial.println(F("u-blox GNSS not detected. Retrying..."));
 //    #endif
 //    delay(1000);
 //  }
-    if (!myGNSS.begin(Wire2)) {
-    Serial.println("u-blox GNSS not detected on I2C. Check wiring!");
+  if (!myGNSS.begin(Wire2)) {
+    // Serial.println("u-blox GNSS not detected on I2C. Check wiring!");
     while (1);
   }
-  Serial.println("Init GPS");
+  // Serial.println("Init GPS");
   myGNSS.setI2COutput(COM_TYPE_UBX); // Disable NMEA, UBX only
     #ifdef DEBUG
-    Serial.println("GPS initialization successful.");
+    // Serial.println("GPS initialization successful.");
   #endif
 }
 
@@ -588,12 +646,12 @@ void setupSDCard()
 {
   if (!SD.begin(chipSelect)) {
     #ifdef DEBUG
-      Serial.println("Card failed or not present.");
+      // Serial.println("Card failed or not present.");
     #endif
     while (1); // Halt system
   }
   #ifdef DEBUG
-    Serial.println("SD initialization successful.");
+    // Serial.println("SD initialization successful.");
   #endif
 }
 
@@ -609,9 +667,9 @@ String generateTimestampedFilename() {
 }
 
 void setup() {
-  Serial.begin(9600);
-  delay(100);
-  while (!Serial);
+  // Serial.begin(9600);
+  delay(1000);
+  // while (!Serial);
   setupSDCard();
   setupRTC();
   setupTerminationSwitches();
@@ -622,11 +680,10 @@ void setup() {
   setupWifi();
   setupCAN();
   setupIMU();
-  Serial.println("Setting up GPS");
   setupGPS();
-  digitalWrite(ledPinB, LOW);
-  delay(1000);
   digitalWrite(ledPinB, HIGH);
+  delay(1000);
+  canTime = millis();
 }
 
 
@@ -708,15 +765,15 @@ void handleClientRequest() {
   WiFiClient client = server.available();
   if (!client) return;
 
-  Serial.println("Client connected");
+  // Serial.println("Client connected");
 
   while (client.connected() && !client.available()) {
     delay(1);
   }
 
   String request = client.readStringUntil('\r');
-  Serial.print("Request: ");
-  Serial.println(request);
+  // Serial.print("Request: ");
+  // Serial.println(request);
   client.read(); // consume '\n'
 
   String filename = "/";
@@ -778,7 +835,7 @@ void handleClientRequest() {
       }
 
       downloadFile.close();
-      Serial.println("File sent successfully.");
+      // Serial.println("File sent successfully.");
     } else {
       client.println("HTTP/1.1 500 Internal Server Error");
       client.println();
@@ -793,7 +850,7 @@ void handleClientRequest() {
 
   delay(10);
   client.stop();
-  Serial.println("Client disconnected");
+  // Serial.println("Client disconnected");
 }
 
 
@@ -861,10 +918,10 @@ void loop() {
     if (!loggingActive) {
       loggingActive = true;
       fileInitialized = false;  // Force file (re)init
-      digitalWrite(ledPinG, HIGH);
-      #ifdef DEBUG
-        Serial.println("Logging started");
-      #endif
+      digitalWrite(ledPinY, HIGH);
+      // #ifdef DEBUG
+      //   Serial.println("Logging started");
+      // #endif
     }
     lastDebounceTime1 = currentTime;
   }
@@ -875,10 +932,10 @@ void loop() {
   if (lastState2 == HIGH && currentState2 == LOW && (currentTime - lastDebounceTime2 > debounceDelay)) {
     if (loggingActive) {
       loggingActive = false;
-      digitalWrite(ledPinG, LOW);
-      #ifdef DEBUG
-        Serial.println("Logging stopped");
-      #endif
+      digitalWrite(ledPinY, LOW);
+      // #ifdef DEBUG
+      //   Serial.println("Logging stopped");
+      // #endif
     }
     lastDebounceTime2 = currentTime;
   }
